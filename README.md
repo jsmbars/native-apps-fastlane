@@ -1,6 +1,6 @@
 # To implement fastlane to your project, you need to make these steps below:
 
-1. Link submodule to the project
+1. Add submodule to project at ./fastlane
 ```
 $> git submodule add git@github.com:jsmbars/native-apps-fastlane.git fastlane
 ```
