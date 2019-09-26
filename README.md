@@ -6,3 +6,4 @@ $> git submodule add git@github.com:jsmbars/native-apps-fastlane.git fastlane
 ```
 2. Copy `.env.fastlane.example` to the project root
 3. Change `.env.fastlane.example` file name suffix to one of (.production or .development) and fill in the variables.
+3. Run `bundle install` from the project root
