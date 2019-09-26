@@ -210,7 +210,7 @@ class FastlaneHelpers
     end
 
     if version_numbers.length === 0
-      version_numbers = ["0.0.1"].to_version
+      version_numbers = ["0.0.1".to_version]
     end
 
     version_numbers.sort { |x, y| x <=> y }.last
