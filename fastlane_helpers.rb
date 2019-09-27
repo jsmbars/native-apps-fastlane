@@ -146,11 +146,11 @@ class FastlaneHelpers
   end
 
   def git_reset_hard(hash:)
-    Fastlane::Action.sh "git", "reset", "--hard", hash
+    run_git_command("reset", "--hard", hash)
   end
 
   def remote_version_tags
-    result = Fastlane::Action.sh "git", "ls-remote", "--tags", "--refs", "origin" do |status, result, command|
+    result = run_git_command("ls-remote", "--tags", "--refs", "origin") do |status, result, command|
       unless status.success?
         raise "Command #{command} (pid #{status.pid}) failed with status #{status.exitstatus}"
       end
@@ -185,15 +185,25 @@ class FastlaneHelpers
   end
 
   def git_delete_tag(tag:)
-    Fastlane::Action.sh "git", "tag", "-d", tag
+    run_git_command("tag", "-d", tag)
   end
 
   def git_delete_tag_remote(tag:)
-    Fastlane::Action.sh "git", "push", "-d", "origin", tag
+    run_git_command("push", "-d", "origin", tag)
   end
 
   def git_fetch
-    Fastlane::Action.sh "git", "fetch"
+    run_git_command("fetch")
+  end
+
+  def run_git_command(*args, &block)
+    Dir.chdir("..") do
+      Fastlane::Action.sh "git", *args, &block
+    end
+  end
+
+  def git_log
+    run_git_command("log")
   end
 
   def get_current_version_from_remote
@@ -279,8 +289,8 @@ class FastlaneHelpers
 
   def git_add_and_commit_all(message:)
     unless git_status_clean?
-      staged_files = Fastlane::Action.sh("git", "add", "-A")
-      Fastlane::Action.sh("git", "commit", "-m", message)
+      staged_files = run_git_command("add", "-A")
+      run_git_command("commit", "-m", message)
     end
   end
 
