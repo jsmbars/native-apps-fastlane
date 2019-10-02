@@ -25,7 +25,7 @@ Dotenv.require_keys(*FastlaneHelpers::REQUIRED_ENV_KEYS)
 before_all do
   if environment == FastlaneHelpers::PRODUCTION_ENV
     ensure_git_branch(
-      branch: master_branch
+      branch: FastlaneHelpers::MASTER_BRANCH
     )
   end
 
