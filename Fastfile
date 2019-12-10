@@ -213,7 +213,7 @@ lane :ios_build do
   certificates
   gym(
     scheme: ENV["IOS_PROJECT_SCHEME"],
-    project: ENV["IOS_PROJECT_FILE_PATH"],
+    workspace: ENV["IOS_WORKSPACE_FILE_PATH"],
     output_directory: "builds/",
     output_name: "#{ENV["IOS_APP_NAME"]}.ipa",
     silent: true,
