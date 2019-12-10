@@ -269,6 +269,21 @@ class FastlaneHelpers
     end
   end
 
+  def change_android_app_name(app_name:)
+    path = "../#{ENV["ANDROID_APP_PATH"]}/src/main/res/values/strings.xml"
+    doc = File.open(path, "r:UTF-8") do |f|
+      @doc = Nokogiri::XML(f)
+      originalName = nil
+      @doc.css("resources string[@name=app_name]").each do |response_node|
+        originalName = response_node.content
+        response_node.content = app_name
+        Fastlane::UI.message("Updating android app name to: #{app_name}")
+      end
+
+      File.write(path, @doc.to_xml(encoding: "UTF-8"))
+    end
+  end
+
   def check_and_update_version_if_development(version:)
     ios_version = get_ios_version
     android_version = get_android_version
