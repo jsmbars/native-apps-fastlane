@@ -32,7 +32,7 @@ before_all do
   ensure_git_status_clean
   fastlane_helpers_instance.git_fetch
   fastlane_helpers_instance.change_android_code_push_deployment_key(key: ENV["CODE_PUSH_ANDROID_DEPLOYMENT_KEY"])
-  fastlane_helpers_instance.change_android_app_name(app_namw: ENV["APP_NAME"])
+  fastlane_helpers_instance.change_android_app_name(app_name: ENV["APP_NAME"])
   fastlane_helpers_instance.generate_frontend_env
 end
 
