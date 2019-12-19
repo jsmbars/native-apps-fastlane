@@ -259,7 +259,7 @@ class FastlaneHelpers
     doc = File.open(path, "r:UTF-8") do |f|
       @doc = Nokogiri::XML(f)
       originalName = nil
-      @doc.css("resources string[@name=reactNativeCodePush_androidDeploymentKey]").each do |response_node|
+      @doc.css("resources string[@name=CodePushDeploymentKey]").each do |response_node|
         originalName = response_node.content
         response_node.content = key
         Fastlane::UI.message("Updating codepush deployment key to: #{key}")
