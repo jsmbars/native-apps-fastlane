@@ -33,6 +33,7 @@ class FastlaneHelpers
     "APP_WRONG_ANDROID_DOWNLOAD_URL",
     "APP_LAMBDA_BASE_URL",
     "APP_BASE_URL",
+    "ENVIRONMENT",
   ].freeze
   DEPLOYMENT_ENV_KEYS = [
     "IOS_PROJECT_FOLDER",
