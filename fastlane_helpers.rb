@@ -22,7 +22,7 @@ end
 
 class FastlaneHelpers
   PRODUCTION_ENV = "production"
-  DEVELOPMENT_ENV = "development"
+  STAGING_ENV = "staging"
   MASTER_BRANCH = "master"
   FRONTEND_ENV_PATH = "../.env"
   FRONTEND_ENV_KEYS = [
@@ -217,7 +217,7 @@ class FastlaneHelpers
     case env
     when PRODUCTION_ENV
       version_numbers = extract_production_version_numbers(tag_names: all_tag_names)
-    when DEVELOPMENT_ENV
+    when STAGING_ENV
       version_numbers = extract_development_version_numbers(tag_names: all_tag_names)
     else
       raise "Unknown environment"
@@ -248,7 +248,7 @@ class FastlaneHelpers
       write_package_json_version!(version: new_version)
       tag_name = new_version
       [new_version, tag_name.to_string]
-    when DEVELOPMENT_ENV
+    when STAGING_ENV
       # do nothing, just return new version and tag name, we are using git tags to store development versions
       tag_name = "development-#{new_version}"
       [new_version, tag_name]
