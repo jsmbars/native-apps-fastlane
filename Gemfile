@@ -4,7 +4,7 @@
 
 source "https://rubygems.org"
 
-gem 'fastlane', '2.131.0'
+gem 'fastlane'
 gem 'rb-readline'
 
 plugins_path = File.join(File.dirname(__FILE__), 'Pluginfile')
