@@ -73,8 +73,8 @@ lane :full_deploy do
       Actions.lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH] = nil
       ios_code_push_deploy
       android_code_push_deploy
-      UI.success("Android app can be downloaded at '#{ios_app_url}'")
-      UI.success("iOS app can be downloaded at '#{android_app_url}'")
+      UI.success("IOS app can be downloaded at '#{ios_app_url}'")
+      UI.success("Android app can be downloaded at '#{android_app_url}'")
     rescue SystemExit, Interrupt => ex
       puts "Task was stoped by CTRL+C"
       fastlane_helpers_instance.git_delete_tag(tag: tag_name)
