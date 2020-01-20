@@ -3,6 +3,7 @@ require "fastlane"
 require "aws-sdk"
 require "byebug"
 require "nokogiri"
+require 'fileutils'
 
 GIT_LS_LINE_FORMAT = /^[0-9a-f]{40}\trefs\/tags\/\S+$/
 GIT_LS_TAG_NAME_CAPTURE_REGEX = /^[0-9a-f]{40}\trefs\/tags\/(\S+)$/
@@ -24,7 +25,8 @@ class FastlaneHelpers
   PRODUCTION_ENV = "production"
   STAGING_ENV = "staging"
   MASTER_BRANCH = "master"
-  FRONTEND_ENV_PATH = "../.env"
+  FRONTEND_ENV_PATH = ".env"
+  FRONTEND_BACKUP_ENV_PATH = ".env.backup"
   FRONTEND_ENV_KEYS = [
     "APP_SENTRY_LINK",
     "APP_IOS_DOWNLOAD_URL",
@@ -83,7 +85,7 @@ class FastlaneHelpers
 
   def generate_frontend_env
     # Ensure fresh file
-    remove_frontend_env
+    backup_frontend_env
 
     temp_env_file = File.new(FRONTEND_ENV_PATH, "w")
     frontend_keys = FastlaneHelpers::FRONTEND_ENV_KEYS
@@ -94,8 +96,15 @@ class FastlaneHelpers
     temp_env_file.close
   end
 
-  def remove_frontend_env
-    File.delete(FRONTEND_ENV_PATH) if File.exist?(FRONTEND_ENV_PATH)
+  def backup_frontend_env
+    FileUtils.cp(FRONTEND_ENV_PATH, FRONTEND_BACKUP_ENV_PATH) if File.exist?(FRONTEND_ENV_PATH)
+  end
+
+  def restore_env_from_backup
+    if File.exist?(FRONTEND_BACKUP_ENV_PATH)
+      FileUtils.cp(FRONTEND_BACKUP_ENV_PATH, FRONTEND_ENV_PATH)
+      File.delete(FRONTEND_BACKUP_ENV_PATH)
+    end
   end
 
   def upload_file_to_s3(file_path:)

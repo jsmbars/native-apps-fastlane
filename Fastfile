@@ -36,6 +36,14 @@ before_all do
   fastlane_helpers_instance.generate_frontend_env
 end
 
+after_all do |lane, options|
+  fastlane_helpers_instance.restore_env_from_backup
+end
+
+error do |lane, exception, options|
+  fastlane_helpers_instance.restore_env_from_backup
+end
+
 lane :full_deploy do
   last_commit_hash = last_git_commit.fetch(:commit_hash)
   ios_app_url = nil
@@ -93,7 +101,6 @@ lane :full_deploy do
       force_with_lease: true,
       tags: false,
     )
-    fastlane_helpers_instance.remove_frontend_env
     UI.error(ex.message)
   rescue => ex
     fastlane_helpers_instance.git_reset_hard(hash: last_commit_hash)
@@ -102,7 +109,6 @@ lane :full_deploy do
       force_with_lease: false,
       tags: false,
     )
-    fastlane_helpers_instance.remove_frontend_env
     UI.error(ex.message)
   end
 end
@@ -141,7 +147,6 @@ lane :js_deploy do
       force_with_lease: true,
       tags: false,
     )
-    fastlane_helpers_instance.remove_frontend_env
     UI.error(ex.message)
   end
 end
@@ -160,6 +165,7 @@ lane :s3_deploy_ios do
     },
   )
 end
+
 lane :s3_deploy_android do
   folder = ENV["S3_IMAGE_FOLDER"].empty? ? "" : ENV["S3_IMAGE_FOLDER"] + "/"
   aws_s3(
