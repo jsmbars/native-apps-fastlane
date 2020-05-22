@@ -9,7 +9,7 @@ require "./fastlane_helpers"
 # Tell fastlane to not automatically create a fastlane/README.md when running fastlane.
 skip_docs
 
-environment = UI.select("Select your environment: ", [FastlaneHelpers::PRODUCTION_ENV, FastlaneHelpers::STAGING_ENV])
+environment = UI.select("Select your environment: ", [FastlaneHelpers::PRODUCTION_ENV, FastlaneHelpers::STAGING_ENV, FastlaneHelpers::DEVELOPMENT_ENV])
 env_variables = Dotenv.parse("../.env.fastlane.#{environment}")
 
 fastlane_helpers_instance = FastlaneHelpers.new(
@@ -31,8 +31,8 @@ before_all do
 
   ensure_git_status_clean
   fastlane_helpers_instance.git_fetch
-  fastlane_helpers_instance.change_android_code_push_deployment_key(key: ENV["CODE_PUSH_ANDROID_DEPLOYMENT_KEY"])
-  fastlane_helpers_instance.change_android_app_name(app_name: ENV["APP_NAME"])
+  fastlane_helpers_instance.set_android_code_push_deployment_key
+  fastlane_helpers_instance.set_android_app_name
   fastlane_helpers_instance.generate_frontend_env
 end
 

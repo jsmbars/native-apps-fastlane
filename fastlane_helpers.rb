@@ -24,16 +24,13 @@ end
 class FastlaneHelpers
   PRODUCTION_ENV = "production"
   STAGING_ENV = "staging"
+  DEVELOPMENT_ENV = "development"
   MASTER_BRANCH = "master"
   FRONTEND_ENV_PATH = "../.env"
   FRONTEND_BACKUP_ENV_PATH = "../.env.backup"
   FRONTEND_ENV_KEYS = [
     "APP_SENTRY_LINK",
-    "APP_IOS_DOWNLOAD_URL",
-    "APP_ANDROID_DOWNLOAD_URL",
-    "APP_WRONG_IOS_DOWNLOAD_URL",
-    "APP_WRONG_ANDROID_DOWNLOAD_URL",
-    "APP_LAMBDA_BASE_URL",
+    "MOBILE_APP_GUID",
     "APP_BASE_URL",
     "ENVIRONMENT",
   ].freeze
@@ -228,6 +225,8 @@ class FastlaneHelpers
       version_numbers = extract_production_version_numbers(tag_names: all_tag_names)
     when STAGING_ENV
       version_numbers = extract_development_version_numbers(tag_names: all_tag_names)
+    when DEVELOPMENT_ENV
+      version_numbers = extract_development_version_numbers(tag_names: all_tag_names)
     else
       raise "Unknown environment"
     end
@@ -261,13 +260,20 @@ class FastlaneHelpers
       # do nothing, just return new version and tag name, we are using git tags to store development versions
       tag_name = "development-#{new_version}"
       [new_version, tag_name]
+    when DEVELOPMENT_ENV
+      # do nothing, just return new version and tag name, we are using git tags to store development versions
+      tag_name = "development-#{new_version}"
+      [new_version, tag_name]
     else
       raise "Unknown environment"
     end
   end
 
-  def change_android_code_push_deployment_key(key:)
-    path = "../#{ENV["ANDROID_APP_PATH"]}/src/main/res/values/strings.xml"
+  def set_android_code_push_deployment_key
+    android_app_path = env_variables.fetch("ANDROID_APP_PATH")
+    key = env_variables.fetch("CODE_PUSH_ANDROID_DEPLOYMENT_KEY")
+
+    path = "../#{android_app_path}/src/main/res/values/strings.xml"
     doc = File.open(path, "r:UTF-8") do |f|
       @doc = Nokogiri::XML(f)
       originalName = nil
@@ -281,7 +287,10 @@ class FastlaneHelpers
     end
   end
 
-  def change_android_app_name(app_name:)
+  def set_android_app_name
+    android_app_path = env_variables.fetch("ANDROID_APP_PATH")
+    app_name = env_variables.fetch("APP_NAME")
+
     path = "../#{ENV["ANDROID_APP_PATH"]}/src/main/res/values/strings.xml"
     doc = File.open(path, "r:UTF-8") do |f|
       @doc = Nokogiri::XML(f)
