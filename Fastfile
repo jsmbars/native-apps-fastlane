@@ -23,13 +23,13 @@ Dotenv.load("../.env.fastlane.#{environment}")
 Dotenv.require_keys(*FastlaneHelpers::REQUIRED_ENV_KEYS)
 
 before_all do
-  if environment == FastlaneHelpers::PRODUCTION_ENV
-    ensure_git_branch(
-      branch: FastlaneHelpers::MASTER_BRANCH
-    )
-  end
+  # if environment == FastlaneHelpers::PRODUCTION_ENV
+  #   ensure_git_branch(
+  #     branch: FastlaneHelpers::MASTER_BRANCH
+  #   )
+  # end
 
-  ensure_git_status_clean
+  # ensure_git_status_clean
   fastlane_helpers_instance.git_fetch
   fastlane_helpers_instance.set_android_code_push_deployment_key
   fastlane_helpers_instance.set_android_app_name

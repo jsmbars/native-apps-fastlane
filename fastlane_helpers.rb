@@ -25,10 +25,12 @@ class FastlaneHelpers
   PRODUCTION_ENV = "production"
   STAGING_ENV = "staging"
   DEVELOPMENT_ENV = "development"
+  STAGING_ENV = "staging"
   MASTER_BRANCH = "master"
   FRONTEND_ENV_PATH = "../.env"
   FRONTEND_BACKUP_ENV_PATH = "../.env.backup"
   FRONTEND_ENV_KEYS = [
+    "ENVIRONMENT",
     "APP_SENTRY_LINK",
     "MOBILE_APP_GUID",
     "APP_BASE_URL",
